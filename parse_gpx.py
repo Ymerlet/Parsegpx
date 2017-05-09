@@ -8,14 +8,6 @@ Parser un gpx, parser une list de WP OSM et dans le futur garder ceux qui sont
 proches et les ajouter au gpx en tant que WP
 """
 
-path='D:/Desktop'
-name='Velotaf_aller.gpx'
-file=path+'/'+name
-
-json='camping.json'
-json_file=path+'/'+json
-
-  
     
 import gpxpy
 import gpxpy.gpx
@@ -85,37 +77,31 @@ def far_away(waypoint,waypoint_close):
     for j in len(gpx.index):
         if distance(waypoint['lon'],waypoint['lat'],gpx['lon'][j],gpx['lat'][j]) < 10:
             return True
-            
-gpx = gpxparser(file)
-waypoint=jsonparser(json_file)
-
-waypoint_close=pd.DataFrame(columns=waypoint.columns.values.tolist())
-
-for i in len(waypoint.index) :
-    import pdb;pdb.set_trace()
-    if far_away(waypoint.iloc[i],gpx) == True:
-        waypoint_close.append(waypoint.iloc)
-
-wpgpx = gpxpy.gpx.GPX()
-
-for Pt in waypoint_close:
-        wpgpx.waypoints.append(gpxpy.gpx.GPXWaypoint(
-        Pt.lat, Pt.lon, elevation=Pt.ele))
-
-with open('output.gpx', 'w') as f:
-        f.write(gpx.to_xml())
         
+if __name__ == '__main__':   
+    path='D:/Desktop'
+    name='Velotaf_aller.gpx'
+    file=path+'/'+name
+    
+    json='camping.json'
+    json_file=path+'/'+json
+         
+    gpx = gpxparser(file)
+    waypoint=jsonparser(json_file)
+    
+    waypoint_close=pd.DataFrame(columns=waypoint.columns.values.tolist())
+    
+    for i in len(waypoint.index) :
+        if far_away(waypoint.iloc[i],gpx) == True:
+            waypoint_close.append(waypoint.iloc)
+    
+    wpgpx = gpxpy.gpx.GPX()
+    
+    for Pt in waypoint_close:
+            wpgpx.waypoints.append(gpxpy.gpx.GPXWaypoint(
+            Pt.lat, Pt.lon, elevation=Pt.ele))
+    
+    with open('output.gpx', 'w') as f:
+            f.write(gpx.to_xml())
         
-#for waypoint in gpx.waypoints:
-#    print(waypoint.name, waypoint.latitude, waypoint.longitude)
-#
-
-#for route in gpx.routes:
-#    print('Route:')
-#    for point in route.points:
-#        print(point.latitude, point.longitude, point.elevation)
-
-# There are many more utility methods and functions:
-# You can manipulate/add/remove tracks, segments, points, waypoints and routes and
-# get the GPX XML file from the resulting object:
 
