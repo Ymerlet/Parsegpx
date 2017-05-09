@@ -84,18 +84,28 @@ def far_away(waypoint,waypoint_close):
     """
     for j in len(gpx.index):
         if distance(waypoint['lon'],waypoint['lat'],gpx['lon'][j],gpx['lat'][j]) < 10:
-            waypoint_close.append(waypoint.iloc)       
-            return
+            return True
             
 gpx = gpxparser(file)
 waypoint=jsonparser(json_file)
 
 waypoint_close=pd.DataFrame(columns=waypoint.columns.values.tolist())
 
-for wp in len(waypoint.index) :
-    far_away(wp,waypoint_close)
+for i in len(waypoint.index) :
+    import pdb;pdb.set_trace()
+    if far_away(waypoint.iloc[i],gpx) == True:
+        waypoint_close.append(waypoint.iloc)
 
-     
+wpgpx = gpxpy.gpx.GPX()
+
+for Pt in waypoint_close:
+        wpgpx.waypoints.append(gpxpy.gpx.GPXWaypoint(
+        Pt.lat, Pt.lon, elevation=Pt.ele))
+
+with open('output.gpx', 'w') as f:
+        f.write(gpx.to_xml())
+        
+        
 #for waypoint in gpx.waypoints:
 #    print(waypoint.name, waypoint.latitude, waypoint.longitude)
 #
@@ -109,6 +119,3 @@ for wp in len(waypoint.index) :
 # You can manipulate/add/remove tracks, segments, points, waypoints and routes and
 # get the GPX XML file from the resulting object:
 
-
-    
-import pdb; pdb.set_trace()
