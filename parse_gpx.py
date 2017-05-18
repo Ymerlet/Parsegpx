@@ -70,12 +70,12 @@ def gpxparser(file):
     
     return gpx_track
 
-def far_away(waypoint,waypoint_close):
+def far_away(waypoint,gpx,limit=10):
     """
     test the distance between a waypoint and track is less than 10k
     """
     for j in len(gpx.index):
-        if distance(waypoint['lon'],waypoint['lat'],gpx['lon'][j],gpx['lat'][j]) < 10:
+        if distance(waypoint['lon'],waypoint['lat'],gpx['lon'][j],gpx['lat'][j]) < limit:
             return True
         
 if __name__ == '__main__':   
@@ -83,11 +83,17 @@ if __name__ == '__main__':
     name='Velotaf_aller.gpx'
     file=path+'/'+name
     
-    json='camping.json'
-    json_file=path+'/'+json
-         
+#    json='camping.json'
+#    json_file=path+'/'+json
+    
+    gpx_file = open('./archies_europe-f.gpx','r', encoding='latin-1')
+
+    waypoint = gpxpy.parse(gpx_file)
+     
     gpx = gpxparser(file)
-    waypoint=jsonparser(json_file)
+#    waypoint=jsonparser(json_file)
+    
+    
     
     waypoint_close=pd.DataFrame(columns=waypoint.columns.values.tolist())
     
