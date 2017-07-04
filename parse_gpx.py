@@ -70,12 +70,12 @@ def gpxparser(file):
     
     return gpx_track
 
-def far_away(waypoint,gpx,limit=10):
+def far_away(waypoint,waypoint_close):
     """
     test the distance between a waypoint and track is less than 10k
     """
     for j in len(gpx.index):
-        if distance(waypoint['lon'],waypoint['lat'],gpx['lon'][j],gpx['lat'][j]) < limit:
+        if distance(waypoint['lon'],waypoint['lat'],gpx['lon'][j],gpx['lat'][j]) < 10:
             return True
         
 if __name__ == '__main__':   
